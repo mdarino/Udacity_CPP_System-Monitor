@@ -109,3 +109,4 @@ void NCursesDisplay::Display(System& system, int n) {
   }
   endwin();
 }
+

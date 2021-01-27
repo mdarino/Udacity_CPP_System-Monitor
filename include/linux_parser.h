@@ -28,6 +28,8 @@ std::string OperatingSystem();
 std::string Kernel();
 
 // CPU
+
+#define CPU_STATE_NUM 10 /* Max number of CPU states */
 enum CPUStates {
   kUser_ = 0,
   kNice_,
@@ -40,7 +42,8 @@ enum CPUStates {
   kGuest_,
   kGuestNice_
 };
-std::vector<std::string> CpuUtilization();
+
+std::vector<long> CpuUtilization();
 long Jiffies();
 long ActiveJiffies();
 long ActiveJiffies(int pid);
