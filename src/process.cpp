@@ -24,8 +24,10 @@ void Process::Ram(std::string ram) { Process::ram_ = ram; }
 // Set the age of this process (in seconds)
 void Process::UpTime(long int upTime) { Process::upTime_ = upTime; }
 
-// TODO: Overload the "less than" comparison operator for Process objects
-// REMOVE: [[maybe_unused]] once you define the function
-bool Process::operator<(Process const& a [[maybe_unused]]) const {
-  return true;
+// Overload the "less than" comparison operator for Process objects
+bool Process::operator<(Process const& a) const{
+      return (this->pid_ > a.pid_);
+}
+bool Process::operator>(Process const& a) const{
+      return (this->cpu_ > a.cpu_);
 }

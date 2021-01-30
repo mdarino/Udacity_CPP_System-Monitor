@@ -1,7 +1,7 @@
 #include "format.h"
-
+#include <sstream>
 #include <string>
-
+#include <iomanip>
 using std::string;
 
 // DONE: Complete this helper function
@@ -13,7 +13,7 @@ string Format::ElapsedTime(long seconds) {
 /* MAX time supported is: 99 Hours + 59 Min + 59 Sec*/
 #define MAX_TIME_SUPPORTED (99 * SECOND_IN_HOUR + 59 * SECOND_IN_MIN + 59)
 
-  string time = "99:59:59";
+  string time = "";
   if (seconds == 0) {
     time = "00:00:00";
   } else if (seconds < MAX_TIME_SUPPORTED) {
@@ -34,8 +34,14 @@ string Format::ElapsedTime(long seconds) {
       }
     }
 
-    time = std::to_string(hours) + ":" + std::to_string(min) + ":" +
-           std::to_string(sec);
+      std::ostringstream str;
+      str << std::setw(2) << std::setfill('0') << hours;
+      str << ":";
+      str << std::setw(2) << std::setfill('0') << min;
+      str << ":";
+      str << std::setw(2) << std::setfill('0') << sec;
+      time = str.str();
   }
+  else {time = "99:59:59";}
   return time;
 }

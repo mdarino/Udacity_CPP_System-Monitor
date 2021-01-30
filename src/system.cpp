@@ -39,8 +39,16 @@ vector<Process>& System::Processes() {
     processes_.emplace_back(aux_process);
   }
 
-  /* SORT ?? Maybe here...*/
-s
+  if(sortCPU)
+  {
+    std::sort(processes_.begin(), processes_.end(), 
+      [](Process const& a, Process const& b) {return a > b;});
+  }
+  else
+  { 
+    std::sort(processes_.begin(), processes_.end(), 
+      [](Process const& a, Process const& b) {return a < b;});
+  }
   return processes_;
 }
 
