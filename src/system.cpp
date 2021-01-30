@@ -30,17 +30,17 @@ vector<Process>& System::Processes() {
      * sort for different things)*/
 
     aux_process.User(LinuxParser::User(onePid));
-    aux_process.Command("CMD");
+    aux_process.Command(LinuxParser::Command(onePid));
     aux_process.CpuUtilization(LinuxParser::CpuUseByProcess(onePid));
-    aux_process.Ram("Ram");
-    aux_process.UpTime(10);
+    aux_process.Ram(LinuxParser::Ram(onePid));
+    aux_process.UpTime(LinuxParser::UpTime(onePid));
 
     /* Push the processes object to the internal list */
     processes_.emplace_back(aux_process);
   }
 
   /* SORT ?? Maybe here...*/
-
+s
   return processes_;
 }
 

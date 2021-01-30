@@ -249,15 +249,43 @@ float LinuxParser::CpuUseByProcess(int pid) {
   if (errorFlag) {
     return 0;
   } else {
-    return (100 * ((float)(total / sysconf(_SC_CLK_TCK)) / time));
+    return ((float)(total / sysconf(_SC_CLK_TCK)) / time);
   }
 }
 
 // TODO: Read and return the command associated with a process
-string LinuxParser::Command(int pid [[maybe_unused]]) { return string(); }
+string LinuxParser::Command(int pid [[maybe_unused]]) {
+  string line = "";
+  std::ifstream stream(kProcDirectory + std::to_string(pid) + "/" +
+                       kCmdlineFilename);
+  if (stream.is_open()) std::getline(stream, line);
+  return line;
+}
 
-// TODO: Read and return the memory used by a process
-string LinuxParser::Ram(int pid [[maybe_unused]]) { return string(); }
+//Read and return the memory used by a process
+string LinuxParser::Ram(int pid) {
+  string line;
+  std::ifstream stream(kProcDirectory + std::to_string(pid) + "/" +
+                       kStatusFilename);
+  std::string word = "";
+  if (stream.is_open()) {
+    while (std::getline(stream, line)) {
+      std::istringstream linestream(line);
+      linestream >> word;
+      if (word == "VmSize:") {
+        linestream >> word;
+        long mem;
+        try {
+          mem = std::stol(word);
+        } catch (const std::invalid_argument& ex) {
+          mem = 0;
+        }
+        return std::to_string(mem >> 10); /* Shift 10 bits to div 1024 */
+      }
+    }
+  }
+  return "0";
+}
 
 // Read and return the user ID associated with a process
 // - If fail return and empty string
@@ -300,5 +328,22 @@ string LinuxParser::User(int pid) {
   return "";
 }
 
-// TODO: Read and return the uptime of a process
-long LinuxParser::UpTime(int pid [[maybe_unused]]) { return 0; }
+// Read and return the uptime of a process
+long LinuxParser::UpTime(int pid) {
+  string line;
+  std::ifstream stream(kProcDirectory + std::to_string(pid) + "/" +
+                       kStatFilename);
+  std::string word = "";
+  int index = 0;
+  if (stream.is_open()) {
+    while (std::getline(stream, line)) {
+      std::istringstream linestream(line);
+      linestream >> word;
+      index++;
+      if (index == STARTTIME_INDEX) {
+        return ((long)(std::stol(word) / sysconf(_SC_CLK_TCK)));
+      }
+    }
+  }
+  return 0;
+}
