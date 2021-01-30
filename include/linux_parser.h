@@ -5,6 +5,14 @@
 #include <regex>
 #include <string>
 
+/*Index of values of the /proc/[PID]/stat */
+#define UTIME_INDEX     14  /* CPU time spent in user code, measured in clock ticks */
+#define STIME_INDEX     15  /* CPU time spent in kernel code, measured in clock ticks */
+#define CUTIME_INDEX    16  /* Waited-for children's CPU time spent in user code (in clock ticks) */
+#define CSTIME_INDEX    17  /* Waited-for children's CPU time spent in kernel code (in clock ticks) */
+#define STARTTIME_INDEX 22  /* Time when the process started, measured in clock ticks */
+
+
 namespace LinuxParser {
 // Paths
 const std::string kProcDirectory{"/proc/"};
@@ -43,11 +51,8 @@ enum CPUStates {
   kGuestNice_
 };
 
-std::vector<long> CpuUtilization();
-long Jiffies();
-long ActiveJiffies();
-long ActiveJiffies(int pid);
-long IdleJiffies();
+std::vector<long> CpuInformation();  /* MD: Rename CpuInformation to Cpuinformation because return only the info...*/
+float CpuUseByProcess(int pid); /* MD: Rename ActiveJiffies to CpuUseByProcess */
 
 // Processes
 std::string Command(int pid);

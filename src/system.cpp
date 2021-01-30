@@ -27,9 +27,9 @@ vector<Process>& System::Processes() {
         Process aux_process(onePid); /* We have a empty process object (we only have the pid_) */
         /* Update values (The idea is to get all the values to have the option to sort for different things)*/
         
-        aux_process.User("Marcos");
+        aux_process.User(LinuxParser::User(onePid));
         aux_process.Command("CMD");
-        aux_process.CpuUtilization(10.1);
+        aux_process.CpuUtilization(LinuxParser::CpuUseByProcess(onePid));
         aux_process.Ram("Ram");
         aux_process.UpTime(10);
     

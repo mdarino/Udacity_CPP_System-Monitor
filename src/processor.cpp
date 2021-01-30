@@ -12,7 +12,7 @@ float Processor::Utilization() {
     https://stackoverflow.com/questions/23367857/accurate-calculation-of-cpu-usage-given-in-percentage-in-linux
    */
 
-  cpuValues = LinuxParser::CpuUtilization();
+  cpuValues = LinuxParser::CpuInformation();
   if (cpuValues.size() ==
       CPU_STATE_NUM) /* For some reason We miss one value, discart this update
                         and print 0.0 (Another option is print the previous)*/
