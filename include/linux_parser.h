@@ -50,9 +50,10 @@ enum CPUStates {
   kGuest_,
   kGuestNice_
 };
-
-std::vector<long> CpuInformation();  /* MD: Rename CpuInformation to Cpuinformation because return only the info...*/
-float CpuUseByProcess(int pid); /* MD: Rename ActiveJiffies to CpuUseByProcess */
+/* MD: Rename CpuInformation to Cpuinformation because return only the info...*/
+std::vector<long> CpuInformation(); 
+/* MD: Rename ActiveJiffies to CpuUseByProcess */
+float CpuUseByProcess(int pid); 
 
 // Processes
 std::string Command(int pid);

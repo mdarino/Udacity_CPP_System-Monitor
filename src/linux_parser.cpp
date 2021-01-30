@@ -1,6 +1,8 @@
 #include "linux_parser.h"
+
 #include <dirent.h>
 #include <unistd.h>
+
 #include <string>
 #include <vector>
 
@@ -204,10 +206,12 @@ vector<int> LinuxParser::Pids() {
 
 // Read and return the use of the CPU
 // - If Fail return 0
-// -This solution is base in the answer of Vilhelm Gray link:https://stackoverflow.com/questions/16726779/how-do-i-get-the-total-cpu-usage-of-an-application-from-proc-pid-stat/16736599#16736599
-float LinuxParser::CpuUseByProcess(int pid){
-  string line; 
-  std::ifstream stream(kProcDirectory + std::to_string(pid) + "/" + kStatFilename);
+// -This solution is base in the answer of Vilhelm Gray
+// link:https://stackoverflow.com/questions/16726779/how-do-i-get-the-total-cpu-usage-of-an-application-from-proc-pid-stat/16736599#16736599
+float LinuxParser::CpuUseByProcess(int pid) {
+  string line;
+  std::ifstream stream(kProcDirectory + std::to_string(pid) + "/" +
+                       kStatFilename);
   std::string word = "";
   bool errorFlag = false;
   long total = 0;
@@ -217,7 +221,7 @@ float LinuxParser::CpuUseByProcess(int pid){
     std::istringstream linestream(line);
     int index = 1;
     while (linestream >> word) {
-      switch (++index){
+      switch (++index) {
         case UTIME_INDEX:
         case STIME_INDEX:
         case CUTIME_INDEX:
@@ -227,59 +231,52 @@ float LinuxParser::CpuUseByProcess(int pid){
           } catch (const std::invalid_argument& ex) {
             errorFlag = true;
           }
-        break;
+          break;
         case STARTTIME_INDEX:
           try {
-            time = (float)LinuxParser::UpTime() - (float)(std::stol(word)/sysconf(_SC_CLK_TCK));
-            if(time == 0)
-             errorFlag = true;
+            time = (float)LinuxParser::UpTime() -
+                   (float)(std::stol(word) / sysconf(_SC_CLK_TCK));
+            if (time == 0) errorFlag = true;
           } catch (const std::invalid_argument& ex) {
             errorFlag = true;
           }
-         break;
-         default:
-         break;
+          break;
+        default:
+          break;
       }
     }
-  }   
-  if (errorFlag)
-  {
-    return 0;
   }
-  else
-  {
+  if (errorFlag) {
+    return 0;
+  } else {
     return (100 * ((float)(total / sysconf(_SC_CLK_TCK)) / time));
   }
 }
 
 // TODO: Read and return the command associated with a process
-string LinuxParser::Command(int pid [[maybe_unused]]) {
-  return string(); 
-}
+string LinuxParser::Command(int pid [[maybe_unused]]) { return string(); }
 
 // TODO: Read and return the memory used by a process
-string LinuxParser::Ram(int pid [[maybe_unused]]) {
-  return string(); 
-}
+string LinuxParser::Ram(int pid [[maybe_unused]]) { return string(); }
 
 // Read and return the user ID associated with a process
 // - If fail return and empty string
 string LinuxParser::Uid(int pid) {
-  string line; 
-  std::ifstream stream(kProcDirectory + std::to_string(pid) + "/" + kStatusFilename);
+  string line;
+  std::ifstream stream(kProcDirectory + std::to_string(pid) + "/" +
+                       kStatusFilename);
   std::string word = "";
   if (stream.is_open()) {
     while (std::getline(stream, line)) {
-       std::istringstream linestream(line);
-       linestream >> word;
-       if (word == "Uid:")
-       {
-         linestream >> word;
-         return word;
-       }
-   }
- }
- return "";
+      std::istringstream linestream(line);
+      linestream >> word;
+      if (word == "Uid:") {
+        linestream >> word;
+        return word;
+      }
+    }
+  }
+  return "";
 }
 
 // Read and return the user associated with a process
@@ -291,20 +288,17 @@ string LinuxParser::User(int pid) {
   std::string uidRead = "";
   std::ifstream stream(kPasswordPath);
   if (stream.is_open()) {
-      while (std::getline(stream, line)) {
-         std::replace(line.begin(), line.end(), ':', ' ');
-         std::istringstream linestream(line);
-         linestream >> nameRead;
-         linestream >> uidRead; /* Remove the "x" */
-         linestream >> uidRead;
-         if (uid == uidRead)
-            return nameRead;
-      }
+    while (std::getline(stream, line)) {
+      std::replace(line.begin(), line.end(), ':', ' ');
+      std::istringstream linestream(line);
+      linestream >> nameRead;
+      linestream >> uidRead; /* Remove the "x" */
+      linestream >> uidRead;
+      if (uid == uidRead) return nameRead;
+    }
   }
   return "";
 }
 
 // TODO: Read and return the uptime of a process
-long LinuxParser::UpTime(int pid [[maybe_unused]]) {
-  return 0; 
-}
+long LinuxParser::UpTime(int pid [[maybe_unused]]) { return 0; }
