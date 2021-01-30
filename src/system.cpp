@@ -20,7 +20,27 @@ using std::vector;
 Processor& System::Cpu() { return cpu_; }
 
 // TODO: Return a container composed of the system's processes
-vector<Process>& System::Processes() { return processes_; }
+vector<Process>& System::Processes() { 
+    processes_.clear();
+    vector<int> myreadPids = LinuxParser::Pids();
+    for(int onePid : myreadPids){
+        Process aux_process(onePid); /* We have a empty process object (we only have the pid_) */
+        /* Update values (The idea is to get all the values to have the option to sort for different things)*/
+        
+        aux_process.User("Marcos");
+        aux_process.Command("CMD");
+        aux_process.CpuUtilization(10.1);
+        aux_process.Ram("Ram");
+        aux_process.UpTime(10);
+    
+        /* Push the processes object to the internal list */
+        processes_.emplace_back (aux_process);
+    }
+
+    /* SORT ?? Maybe here...*/
+
+    return processes_; 
+}
 
 // Return the system's kernel identifier (string)
 std::string System::Kernel() { return LinuxParser::Kernel(); }

@@ -3,7 +3,6 @@
 
 #include <vector>
 
-
 class Processor {
  public:
   float Utilization();
