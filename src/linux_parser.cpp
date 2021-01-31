@@ -254,7 +254,7 @@ float LinuxParser::CpuUseByProcess(int pid) {
 }
 
 // Read and return the command associated with a process
-string LinuxParser::Command(int pid [[maybe_unused]]) {
+string LinuxParser::Command(int pid) {
   string line = "";
   std::ifstream stream(kProcDirectory + std::to_string(pid) + "/" +
                        kCmdlineFilename);
