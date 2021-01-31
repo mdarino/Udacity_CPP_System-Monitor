@@ -336,9 +336,9 @@ long LinuxParser::UpTime(int pid) {
   std::string word = "";
   int index = 0;
   if (stream.is_open()) {
-    while (std::getline(stream, line)) {
-      std::istringstream linestream(line);
-      linestream >> word;
+    std::getline(stream, line);
+    std::istringstream linestream(line);
+    while (linestream >> word){ 
       index++;
       if (index == STARTTIME_INDEX) {
         return ((long)(std::stol(word) / sysconf(_SC_CLK_TCK)));

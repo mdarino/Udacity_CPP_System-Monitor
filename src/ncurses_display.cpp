@@ -64,9 +64,9 @@ void NCursesDisplay::DisplayProcesses(std::vector<Process>& processes,
   int const time_column{35};
   int const command_column{46};
   wattron(window, COLOR_PAIR(2));
-  mvwprintw(window, ++row, pid_column, "PID");
+  mvwprintw(window, ++row, pid_column, "PID(P)");
   mvwprintw(window, row, user_column, "USER");
-  mvwprintw(window, row, cpu_column, "CPU[%%]");
+  mvwprintw(window, row, cpu_column, "CPU[%%](C)");
   mvwprintw(window, row, ram_column, "RAM[MB]");
   mvwprintw(window, row, time_column, "TIME+");
   mvwprintw(window, row, command_column, "COMMAND");
@@ -89,7 +89,7 @@ void NCursesDisplay::Display(System& system, int n) {
   noecho();       // do not print input values
   cbreak();       // terminate ncurses on ctrl + c
   start_color();  // enable color
-
+  timeout(1000); // 1 second delay
   int x_max{getmaxx(stdscr)};
   WINDOW* system_window = newwin(9, x_max - 1, 0, 0);
   WINDOW* process_window =
@@ -105,7 +105,11 @@ void NCursesDisplay::Display(System& system, int n) {
     wrefresh(system_window);
     wrefresh(process_window);
     refresh();
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+    int userInput;
+    userInput = getch();
+    if ((userInput == 'P') || (userInput == 'p')) { system.setSortCPU(false);}
+    if ((userInput == 'C') || (userInput == 'c')) { system.setSortCPU(true);}
+    //std::this_thread::sleep_for(std::chrono::seconds(1));
   }
   endwin();
 }
