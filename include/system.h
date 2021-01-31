@@ -9,18 +9,16 @@
 
 class System {
  public:
-  Processor& Cpu();                   
-  std::vector<Process>& Processes();  
-  float MemoryUtilization();          
-  long UpTime();                      
-  int TotalProcesses();               
-  int RunningProcesses();             
-  std::string Kernel();               
+  Processor& Cpu();
+  std::vector<Process>& Processes();
+  float MemoryUtilization();
+  long UpTime();
+  int TotalProcesses();
+  int RunningProcesses();
+  std::string Kernel();
   std::string OperatingSystem();
-  void setSortCPU(bool status) {sortCPU = status;}      
+  void setSortCPU(bool status) { sortCPU = status; }
 
-
-  // TODO: Define any necessary private members
  private:
   Processor cpu_ = {};
   std::vector<Process> processes_ = {};

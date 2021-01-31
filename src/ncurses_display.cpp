@@ -73,7 +73,8 @@ void NCursesDisplay::DisplayProcesses(std::vector<Process>& processes,
   wattroff(window, COLOR_PAIR(2));
   for (int i = 0; i < n; ++i) {
     mvwprintw(window, ++row, pid_column, to_string(processes[i].Pid()).c_str());
-    mvwprintw(window, row, user_column, processes[i].User().substr(0,6).c_str());
+    mvwprintw(window, row, user_column,
+              processes[i].User().substr(0, 6).c_str());
     float cpu = processes[i].CpuUtilization() * 100;
     mvwprintw(window, row, cpu_column, to_string(cpu).substr(0, 4).c_str());
     mvwprintw(window, row, ram_column, processes[i].Ram().c_str());
@@ -89,7 +90,7 @@ void NCursesDisplay::Display(System& system, int n) {
   noecho();       // do not print input values
   cbreak();       // terminate ncurses on ctrl + c
   start_color();  // enable color
-  timeout(1000); // 1 second delay
+  timeout(1000);  // 1 second delay
   int x_max{getmaxx(stdscr)};
   WINDOW* system_window = newwin(9, x_max - 1, 0, 0);
   WINDOW* process_window =
@@ -107,9 +108,12 @@ void NCursesDisplay::Display(System& system, int n) {
     refresh();
     int userInput;
     userInput = getch();
-    if ((userInput == 'P') || (userInput == 'p')) { system.setSortCPU(false);}
-    if ((userInput == 'C') || (userInput == 'c')) { system.setSortCPU(true);}
-    //std::this_thread::sleep_for(std::chrono::seconds(1));
+    if ((userInput == 'P') || (userInput == 'p')) {
+      system.setSortCPU(false);
+    }
+    if ((userInput == 'C') || (userInput == 'c')) {
+      system.setSortCPU(true);
+    }
   }
   endwin();
 }

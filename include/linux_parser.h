@@ -7,15 +7,15 @@
 
 /*Index of values of the /proc/[PID]/stat */
 /* CPU time spent in kernel code, measured in clock ticks */
-#define UTIME_INDEX     14
+#define UTIME_INDEX 14
 /* CPU time spent in kernel code, measured in clock ticks */
-#define STIME_INDEX     15
+#define STIME_INDEX 15
 /* Waited-for children's CPU time spent in user code (in clock ticks) */
-#define CUTIME_INDEX    16
+#define CUTIME_INDEX 16
 /* Waited-for children's CPU time spent in kernel code (in clock ticks) */
-#define CSTIME_INDEX    17
+#define CSTIME_INDEX 17
 /* Time when the process started, measured in clock ticks */
-#define STARTTIME_INDEX 22  
+#define STARTTIME_INDEX 22
 
 namespace LinuxParser {
 // Paths
@@ -55,9 +55,9 @@ enum CPUStates {
   kGuestNice_
 };
 /* MD: Rename CpuInformation to Cpuinformation because return only the info...*/
-std::vector<long> CpuInformation(); 
+std::vector<long> CpuInformation();
 /* MD: Rename ActiveJiffies to CpuUseByProcess */
-float CpuUseByProcess(int pid); 
+float CpuUseByProcess(int pid);
 
 // Processes
 std::string Command(int pid);

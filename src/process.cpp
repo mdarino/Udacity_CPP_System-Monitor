@@ -25,9 +25,9 @@ void Process::Ram(std::string ram) { Process::ram_ = ram; }
 void Process::UpTime(long int upTime) { Process::upTime_ = upTime; }
 
 // Overload the "less than" comparison operator for Process objects
-bool Process::operator<(Process const& a) const{
-      return (this->pid_ > a.pid_);
+bool Process::operator<(Process const& a) const {
+  return (this->pid_ > a.pid_);
 }
-bool Process::operator>(Process const& a) const{
-      return (this->cpu_ > a.cpu_);
+bool Process::operator>(Process const& a) const {
+  return (this->cpu_ > a.cpu_);
 }

@@ -253,7 +253,7 @@ float LinuxParser::CpuUseByProcess(int pid) {
   }
 }
 
-// TODO: Read and return the command associated with a process
+// Read and return the command associated with a process
 string LinuxParser::Command(int pid [[maybe_unused]]) {
   string line = "";
   std::ifstream stream(kProcDirectory + std::to_string(pid) + "/" +
@@ -262,7 +262,7 @@ string LinuxParser::Command(int pid [[maybe_unused]]) {
   return line;
 }
 
-//Read and return the memory used by a process
+// Read and return the memory used by a process
 string LinuxParser::Ram(int pid) {
   string line;
   std::ifstream stream(kProcDirectory + std::to_string(pid) + "/" +
@@ -338,7 +338,7 @@ long LinuxParser::UpTime(int pid) {
   if (stream.is_open()) {
     std::getline(stream, line);
     std::istringstream linestream(line);
-    while (linestream >> word){ 
+    while (linestream >> word) {
       index++;
       if (index == STARTTIME_INDEX) {
         return ((long)(std::stol(word) / sysconf(_SC_CLK_TCK)));
